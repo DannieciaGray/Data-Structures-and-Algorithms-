@@ -1,2 +1,24 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+Data Structures and Algorithms
+This repository is a collection of my implementations and solutions for various data structures and algorithms, written in
+[PYTHON]. It serves as a resource for learning, practicing, and mastering fundamental concepts in computer science, as well 
+as preparing for technical interviews.
+
+📌 What is Included
+Data Structures: Arrays, Linked Lists, Stacks, Queues, Trees, Graphs, Hash Tables, Heaps, and more.
+Algorithms: Sorting, Searching, Dynamic Programming, Greedy Algorithms, Backtracking, Divide and Conquer, and Graph Traversal (BFS, DFS).
+Coding Challenges: Solutions to popular problems from platforms like LeetCode, HackerRank, and CodeSignal.
+Interview Prep: Optimized code with detailed explanations, time complexity, and space complexity analysis.
+
+🛠 Features
+Well-structured and modular code for easy navigation.
+Beginner-friendly explanations and comments.
+Test cases included for verifying functionality.
+Continuous updates with new problems and solutions.
+
+💡 How to Use
+Clone the repository: git clone https://github.com/yourusername/your-repo-name.git
+Navigate to the folder of interest and explore the code.
+Use it as a study resource or to practice coding problems.
