@@ -1,62 +1,61 @@
 # Node class 
 class ListNode:
-    def __init__(self, data: any):
+    def __init__(self, data: any) -> None:
         self.data = data
-        self.prev = None  # Points to the previous node
-        self.next = None  # Points to the next node
+        self.prev = None  # Pointer to the previous node
+        self.next = None  # Pointer to the next node
 
 # Doubly linked list 
 class DoublyLinkedList:
-    def __init__(self):
-        self.head = None  # Initialize head to None
+    def __init__(self) -> None:
+        self.head = None  # Points to the first node
+        self.tail = None  # Points to the last node
 
     # Insert at the beginning
-    def insert_first(self, value: int):
+    def insert_first(self, value: int) -> None:
         new_node = ListNode(value)
         if self.head is None:
-            self.head = new_node
+            self.head = self.tail = new_node
         else:
             new_node.next = self.head
             self.head.prev = new_node
             self.head = new_node  # Update head to new node
 
     # Insert at the end
-    def insert_last(self, value: int):
+    def insert_last(self, value: int) -> None:
         new_node = ListNode(value)
         if self.head is None:
-            self.head = new_node
-            return
-
-        last = self.head
-        while last.next:
-            last = last.next  # Traverse to the last node
-
-        last.next = new_node
-        new_node.prev = last  # Maintain doubly linked structure
+            self.head = self.tail = new_node
+        else:
+            self.tail.next = new_node
+            new_node.prev = self.tail
+            self.tail = new_node  # Update tail to new node
 
     # Delete a node
-    def delete_node(self, value: int):
+    def delete_node(self, value: int) -> None:
         current = self.head
         if current is None:
-            print("List is empty!")
             return
 
         if current.data == value:  # If head is to be deleted
             self.head = current.next
             if self.head:
                 self.head.prev = None
-            del current  # Properly delete the node
+            else:
+                self.tail = None  # Update tail if list is empty
+            del current
             return
 
         while current and current.data != value:
             current = current.next
 
         if current is None:
-            print(f"Node with the value {value} not found!")
             return
 
         if current.next:  # If not the last node
             current.next.prev = current.prev
+        else:
+            self.tail = current.prev  # Update tail if deleting last node
 
         if current.prev:  # If not the first node
             current.prev.next = current.next
@@ -72,8 +71,8 @@ class DoublyLinkedList:
             current = current.next
         return False
 
-    # Insert after a given node
-    def insert_after(self, node: int, value: int):
+    # Insert after a given node value
+    def insert_after(self, node: int, value: int) -> None:
         new_node = ListNode(value)
         current = self.head
 
@@ -84,13 +83,13 @@ class DoublyLinkedList:
 
                 if current.next:
                     current.next.prev = new_node
+                else:
+                    self.tail = new_node  # Update tail if new last node
                 current.next = new_node
                 return
             current = current.next
 
-        print(f"{node} is not in the list. Therefore, {value} cannot be inserted.")
-
-    # Get the length of the list
+    # Get length of the list
     def length(self) -> int:
         count = 0
         current = self.head
@@ -99,9 +98,10 @@ class DoublyLinkedList:
             current = current.next
         return count
 
-    # Reverse the list
-    def reverse(self):
+    # Reverse the linked list
+    def reverse(self) -> None:
         current = self.head
+        self.tail = self.head
         prev = None
 
         while current:
@@ -113,22 +113,22 @@ class DoublyLinkedList:
 
         self.head = prev  # Update head pointer
 
-    # Remove duplicates
-    def remove_duplicates(self):
+    # Remove duplicates from a **sorted** doubly linked list
+    def remove_duplicates(self) -> None:
         current = self.head
-        seen = set()  # Track seen values
-        while current:
-            if current.data in seen:
-                prev_node = current.prev
-                prev_node.next = current.next
-                if current.next:
-                    current.next.prev = prev_node
+        while current and current.next:
+            if current.data == current.next.data:
+                duplicate = current.next
+                current.next = duplicate.next
+                if duplicate.next:
+                    duplicate.next.prev = current
+                else:
+                    self.tail = current  # Update tail if last node removed
             else:
-                seen.add(current.data)
-            current = current.next
+                current = current.next
 
-    # Rotate the list by n positions
-    def rotate(self, n: int):
+    # Rotate list by n positions
+    def rotate(self, n: int) -> None:
         if not self.head or n == 0:
             return  # No rotation needed
 
@@ -145,6 +145,7 @@ class DoublyLinkedList:
         new_head = current.next
         new_head.prev = None
         current.next = None
+        self.tail = current  # Update tail to new last node
 
         last = new_head
         while last.next:
@@ -152,5 +153,4 @@ class DoublyLinkedList:
 
         last.next = self.head
         self.head.prev = last
-
         self.head = new_head  # Update head pointer
