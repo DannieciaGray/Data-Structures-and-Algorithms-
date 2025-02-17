@@ -124,17 +124,66 @@ class DoublyLinkedList:
             current.next = prev
             prev = current 
             current = next_node
-            
+
         self.head = prev
             
 
     # remove duplicates method
     def remove_duplicates(self):
-        pass
+        current = self.head 
+        if current is None:
+            print("List is empty!")
+            
+        
+        while current and current.next:
+            if current.data == current.next.data: # if current = current.next
+                # delete current 
+                duplicate = current.next
+                current.next = duplicate.next 
+
+                if duplicate.next:
+                    duplicate.next.prev = current  
+            else:
+                #iterate through the list until current is None 
+                current = current.next
+        
 
     # rotate method 
     def rotate(self,n: int):
-        pass 
+        if not self.head or n == 0:
+            return # No rotation needed for empty list or zero rotation 
+
+        # Find the length of the list
+        length = self.length()
+        n = n % length
+
+        if n == 0:
+            return # No need to rotate if n is a multiple of length 
+        
+        # Find the (n-1)th node (new tail)
+        current = self.head 
+        for _ in range(n-1):
+            current = current.next 
+            
+        new_head = current.next # New head after rotation
+        new_head.prev = None    # Break previous link
+        current.next = None     # Break old tail connection 
+
+        # Find the tail node (last node)
+        tail = new_head
+        while tail.next:
+            tail = tail.next 
+
+        # Connect old tail to old head 
+        tail.next = self.head 
+        self.head.prev = tail # Maintain doubly linked structure 
+
+        # Update head pointer 
+        self.head = new_head
+
+
+
+
 
     
 
