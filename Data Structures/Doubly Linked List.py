@@ -83,7 +83,7 @@ class DoublyLinkedList:
     def insert_after(self,node: int, value: int):
         new_node = ListNode(value) 
         current = self.head 
-        
+
         if current is None:
             print("List is empty!")
             return
@@ -102,13 +102,31 @@ class DoublyLinkedList:
         return(f"{node} is not in the list. Therefore, {value} cannot be inserted.")
       
 
-    # lenght method 
+    # length method 
     def length(self):
-        pass 
+        length = 0 
+        current = self.head 
+        while current:
+            current = current.next # iterate through list until value is None
+            length += 1 # increase length by 1
+        
+        return length
+
+
 
     # reverse method
     def reverse(self):
-        pass 
+        prev = None 
+        current = self.head 
+
+        while current:
+            next_node = current.next 
+            current.next = prev
+            prev = current 
+            current = next_node
+            
+        self.head = prev
+            
 
     # remove duplicates method
     def remove_duplicates(self):
