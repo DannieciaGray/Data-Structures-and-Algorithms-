@@ -1,82 +1,63 @@
-# Arguments:
-    # s (str): A string containing parentheses, brackets, and/or braces.
-
-# Returns:
-    # "Balanced" (str): If all parentheses, brackets, and braces are properly matched and nested.
-    # "Unbalanced" (str): If the parentheses, brackets, or braces are not properly matched or nested.
-
-# Errors Raised:
-    # TypeError: If the input string is empty.
 def checkBalancedParenthesis(s):
     # 1. Check if the string is empty. If so, raise a TypeError.
     if s == "":
-        raise TypeError("Input string cannot be empty")
+        raise TypeError  # Must raise TypeError without arguments
 
-    # 2. Create a stack to track opening parentheses, brackets, or braces.
+    # 2. Create a stack to track opening brackets.
     stack = []
     matches = {")": "(", "}": "{", "]": "["}  # Mapping of closing to opening brackets
+
     # 3. Iterate through the string:
     for char in s:
         # If the current character is an opening bracket, push it onto the stack.
-        if char in "{[(":
+        if char in "({[":
             stack.append(char)
         # If it is a closing bracket:
-        if char in ")]}":
+        elif char in ")}]":
             # If the stack is empty, return "Unbalanced" (there's nothing to match it).
             if not stack:
                 return "Unbalanced"
-            #Otherwise, pop from the stack and check if it matches the expected opening bracket.
+            # Otherwise, pop from the stack and check if it matches the expected opening bracket.
             top = stack.pop()
             if top != matches[char]:
                 return "Unbalanced"
-            
 
-    # 4. After iteration, if the stack is empty, return "Balanced".
-    #Otherwise, return "Unbalanced" (indicating unmatched opening brackets).
+    # 4. If the stack is empty, return "Balanced"; otherwise, return "Unbalanced".
     return "Balanced" if not stack else "Unbalanced"
 
 
-# Arguments:
-    # s (str): A string containing parentheses, brackets, and/or braces.
-
-# Returns:
-    # list[int]: A sorted list of indices where unmatched/unbalanced parentheses, brackets, or braces occur.
-
-# Errors Raised:
-    # TypeError: If the input string is empty.
 def getUnbalancedPositions(s):
-    # Steps:
     # 1. Check if the string is empty. If so, raise a TypeError.
     if s == "":
-        raise TypeError("Input string cannot be empty")
+        raise TypeError  # Must raise TypeError without arguments
 
     # 2. Create a stack that stores tuples (opening bracket, index).
     stack = []
     matches = {")": "(", "}": "{", "]": "["}  # Mapping of closing to opening brackets
 
-    # 3. Create a list to store indices of unbalanced closing brackets.
+    # 3. Create a list to store indices of unbalanced brackets.
     unbalanced_indices = []
+
     # 4. Iterate through the string:
     for i, char in enumerate(s):
         # If the current character is an opening bracket, push (character, index) onto the stack.
         if char in "({[":
-            stack.append((char,i))
+            stack.append((char, i))
         # If it is a closing bracket:
-        if char in "]})":
-            # If the stack is empty, add its index to the unbalanced list (it has no match).
+        elif char in ")}]":
+            # If the stack is empty, it means this closing bracket has no match.
             if not stack:
                 unbalanced_indices.append(i)
-            # Otherwise, pop from the stack and check if it matches the expected opening bracket.
-            top = stack.pop()
-            if top[0] != matches[char]:
-                unbalanced_indices.append(i)
-            
-            # while stack not empty, add remaining brackets indices to list
-            while stack:
-                unbalanced_indices.append(stack.pop()[1])
-            
-            # 6. Return the sorted list of unbalanced indices.
-            return unbalanced_indices
+            else:
+                # Pop the last opening bracket from the stack.
+                top = stack.pop()
+                if top[0] != matches[char]:  # Compare only the bracket (not the index)
+                    unbalanced_indices.append(i)  # Mismatched closing bracket
 
-   
+    # 5. Any remaining unmatched opening brackets in the stack are also unbalanced.
+    while stack:
+        unbalanced_indices.append(stack.pop()[1])  # Append only the index
+
+    # 6. Return the sorted list of unbalanced indices.
+    return sorted(unbalanced_indices)
 
