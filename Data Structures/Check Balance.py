@@ -52,12 +52,11 @@ def getUnbalancedPositions(s):
                 # Pop the last opening bracket from the stack.
                 top = stack.pop()
                 if top[0] != matches[char]:  # Compare only the bracket (not the index)
+                    unbalanced_indices.append(top[1])  # Mismatched opening bracket
                     unbalanced_indices.append(i)  # Mismatched closing bracket
 
     # 5. Any remaining unmatched opening brackets in the stack are also unbalanced.
     while stack:
-        unbalanced_indices.append(stack.pop()[1])  # Append only the index
+        unbalanced_indices.append
 
-    # 6. Return the sorted list of unbalanced indices.
-    return sorted(unbalanced_indices)
 
