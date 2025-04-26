@@ -1,23 +1,37 @@
 class Node:
-    def __init__(self,key: int) -> None:
-        self.key = key 
-        self.next = None 
+    def __init__(self, key: int) -> None:
+        self.key = key
+        self.next = None
 
 class HashTable:
-    def __init__(self,size: int = 0) -> None:
+    def __init__(self, size: int = 10) -> None:
         self.size = size
         self.table = [None] * self.size
 
-    def hash_function(self,key: int) -> int:
+    def hash_function(self, key: int) -> int:
         return key % self.size
 
     def insert(self, key: int) -> None:
         index = self.hash_function(key)
-        new_node = Node(key)
-        new_node.next = self.table[index]
-        self.table[index] = new_node
+        current = self.table[index]
 
-    def search(self,key: int) -> bool:
+        # Check if the key already exists
+        while current:
+            if current.key == key:
+                return  # Key already exists, don't insert duplicate
+            current = current.next
+
+        # Insert at the end of the list
+        new_node = Node(key)
+        if self.table[index] is None:
+            self.table[index] = new_node
+        else:
+            current = self.table[index]
+            while current.next:
+                current = current.next
+            current.next = new_node
+
+    def search(self, key: int) -> bool:
         index = self.hash_function(key)
         current = self.table[index]
         while current:
@@ -26,10 +40,11 @@ class HashTable:
             current = current.next
         return False
 
-    def delete(self,key: int) -> bool:
+    def delete(self, key: int) -> bool:
         index = self.hash_function(key)
         current = self.table[index]
         prev = None
+
         while current:
             if current.key == key:
                 if prev:
@@ -39,4 +54,5 @@ class HashTable:
                 return True
             prev = current
             current = current.next
-        return False 
+
+        return False
